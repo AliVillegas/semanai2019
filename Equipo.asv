@@ -1,0 +1,24 @@
+classdef Equipo
+    properties
+        numControl
+        nombre
+        marca
+        modelo
+        numSerie
+        fechaInstalacion
+        estadoEquipo
+    end
+    
+    methods
+        function obj = Equipo(nc,n,ma,mo,ns)
+             if nargin > 0
+                obj.nombre = n;
+                obj.marca = ma;
+                obj.modelo = mo;
+                obj.numSerie = ns;
+                obj.numControl = nc;
+             end
+        end
+    end
+end
+
