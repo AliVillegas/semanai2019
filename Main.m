@@ -122,9 +122,9 @@ end
 months = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
 
 
-%{
+
 %LLENAR SERVICIOS
-datos = [string(months(1,month)), "Realizado"]
+datos = ["-", "-"];
 insertServicio = sprintf('insert into Servicio(mes,tipo) values ("%s","%s");', datos);
 exec(conn, insertServicio);
 for month = 1 : 12
@@ -152,7 +152,7 @@ for prov = 1 : proveedorC
          exec(conn, insertProveedorServicio);
     end
 end
-%}
+
 %LLENAR EQUIPOS
 [equiposR, equiposC] = size(equipos);
 
@@ -161,6 +161,14 @@ for equipo = 1 : equiposC
     datos = [string(e.equipo),string(e.marca), string(e.modelo), string(e.numSerie),string(e.proveedorCompra),string(e.fechaInstalacion),string(e.estadoEquipo),string(e.refaccionesCambiadas),e.proveedorServicio,e.servicio]
     insertEquipo = sprintf('insert into Equipo(equipo,marca,modelo,numeroSerie,proveedor,fechaInstal,estado,refaccionesCambiadas,proveedorServicio,servicio) values ("%s","%s","%s","%s","%s","%s","%s","%s","%s","%s");', datos);
     exec(conn, insertEquipo);
+end
+
+%%LLENAR INVENTARIO
+for equipo = 1 : equiposC
+    u = DATA(equipo + 1,column + 9);
+    a = DATA(equipo + 1,column + 6);
+    datos = [equipo,string(u), string(a)];
+    insertToInventario = sprintf('insert into Inventario(Equipo,Area,Ubicacion) values ("%s","%s","%s");', datos);
 end
 
 close(conn);
