@@ -1,20 +1,22 @@
 classdef Equipo
     properties
         numControl
-        nombre
+        equipo
         marca
         modelo
         numSerie
         proveedorCompra
         ubicacion
         fechaInstalacion
-        estadoEquipo       
+        estadoEquipo  
+        refaccionesCambiadas
+        provedorServicio = ProveedorServicio
     end
     
     methods
-        function obj = Equipo(nc,n,ma,mo,ns,pc,u,fi,ee)
+        function obj = Equipo(nc,n,ma,mo,ns,pc,u,fi,ee,rc,ps)
              if nargin > 0
-                obj.nombre = n;
+                obj.equipo = n;
                 obj.marca = ma;
                 obj.modelo = mo;
                 obj.numSerie = ns;
@@ -23,6 +25,8 @@ classdef Equipo
                 obj.ubicacion = u;
                 obj.fechaInstalacion = fi;
                 obj.estadoEquipo = ee;
+                obj.refaccionesCambiadas = rc;
+                obj.provedorServicio = ps;
              end
         end
     end
