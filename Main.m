@@ -5,6 +5,7 @@ DATA(containsNumbers) = cellfun(@num2str,DATA(containsNumbers),'UniformOutput',f
 equipos = [];
 areas =['INGENIERÍA BIOMÉDICA','MORGUE','HEMODIALISIS','RADIOTERAPIA','CUARTO DE MÁGUINAS','REHABILITACIÓN FÍSICA', 'ONCOLOGÍA','POLÍCLINICA','IMAGEN','URGENCIAS','ENDOSCOPÍA','MEDICINA NUCLEAR','QUIRÓFANO CENTRAL', 'CEYE','TERAPIA INTERMEDIA','QUIRÓFANO CENTRAIL', 'CEYE','TERAPIA INTERMEDIA','TERAPIA INTENSIVA', 'LABOR', 'CUNERO','HOSPITALIZACIÓN SEGUNDO PISO', 'HOSPITALICACIÓN TERCER PISO','FARMACIA,FLORES y REGALOS','FARMACIA,HOSPITALIZACIÓN','ALMACEN y SUBALMACENES', 'APOYO RESPIRATORIO'];
 proveedoresDeServicio = [];
+servicios = [];
 modelos = [];
 ubicaciones = [];
 dbfile = fullfile(pwd,'Inventario.db');
@@ -47,13 +48,13 @@ for row = 2 :  dataRows
         contacto = DATA(row,column + 13);
         telefono = DATA(row,column + 14);
         if strcmp(nombre,'NaN')
-            nombre = '';
+            nombre = '-';
         end
         if strcmp(contacto,'NaN')
-            contacto = '';
+            contacto = '-';
         end
         if strcmp(telefono,'NaN')
-            telefono = '';
+            telefono = '-';
         end
         if strcmp(nc,'NaN')
             nc = '';
@@ -91,40 +92,75 @@ for row = 2 :  dataRows
         ps = ProveedorServicio(nombre,contacto,telefono);
         proveedorYaExiste =[];
         [proveedorR, proveedorC] = size(proveedoresDeServicio);
-        if size(proveedoresDeServicio) == 0
-           proveedoresDeServicio = [proveedoresDeServicio,ps];
-        else
-            %%PROVEEDOR SIEMPRE ES 1
-            for proveedor = 1 : proveedorC
-                prS = proveedoresDeServicio(1,proveedor);
-                if(strcmp(ps.nombre,prS.nombre))
-                    proveedorYaExiste = proveedor;
-                    break
-                    %disp(proveedorYaExiste);
-                end
+        
+        for proveedor = 1 : proveedorC
+            prS = proveedoresDeServicio(1,proveedor);
+            if(strcmp(string(ps.nombre),string(prS.nombre)))
+                proveedorYaExiste = proveedor;
+                break
+                %disp(proveedorYaExiste);
             end
         end
+        disp(proveedorYaExiste)
         if size(proveedorYaExiste)  == 0
            proveedoresDeServicio = [proveedoresDeServicio,ps];
+           [proveedorR, proveedorC] = size(proveedoresDeServicio);
+           ps = proveedorC;
         else
-           if size(proveedoresDeServicio) > 0
-                ps = proveedoresDeServicio(1,proveedorYaExiste);
-           end
-           %disp(ps)
+           ps = proveedorYaExiste;
+           disp(ps)
         end
-        
+        [eR, eC] = size(equipos);
+        equipo = Equipo(nc,n,ma,mo,ns,pc,u,fi,ee,rc,ps,1);
         if ~strcmp(nc,'')
-            equipo = Equipo(nc,n,ma,mo,ns,pc,u,fi,ee,rc,ps);
-            equipos = [equipos,equipo];
+          equipos = [equipos,equipo];
         end
        % disp(equipo);
     end
 end
+
+months = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+
+
+%{
+%LLENAR SERVICIOS
+datos = [string(months(1,month)), "Realizado"]
+insertServicio = sprintf('insert into Servicio(mes,tipo) values ("%s","%s");', datos);
+exec(conn, insertServicio);
+for month = 1 : 12
+    for type = 1 : 2
+        if type == 1
+            datos = [string(months(1,month)), "Pendiente"]
+            insertServicio = sprintf('insert into Servicio(mes,tipo) values ("%s","%s");', datos);
+            exec(conn, insertServicio);
+        else
+            datos = [string(months(1,month)), "Realizado"]
+            insertServicio = sprintf('insert into Servicio(mes,tipo) values ("%s","%s");', datos);
+            exec(conn, insertServicio);
+        end
+    end
+end
+
+%LLENAR PROVEEDORES DE SERVICIO
 [proveedorR, proveedorC] = size(proveedoresDeServicio);
 
 for prov = 1 : proveedorC
     ps = proveedoresDeServicio(1,prov);
-    insert(conn,'ProveedorServicio', columnNamesProveedorServicio,  {ps.nombre,ps.contacto,ps.telefono});
+    if ~strcmp(string(ps.nombre),'-')
+         datos = [string(ps.nombre),string(ps.contacto), string(ps.telefono)]
+         insertProveedorServicio = sprintf('insert into ProveedorServicio(nombre,contacto,telefono) values ("%s","%s","%s");', datos);
+         exec(conn, insertProveedorServicio);
+    end
+end
+%}
+%LLENAR EQUIPOS
+[equiposR, equiposC] = size(equipos);
+
+for equipo = 1 : equiposC
+    e = equipos(1,equipo);
+    datos = [string(e.equipo),string(e.marca), string(e.modelo), string(e.numSerie),string(e.proveedorCompra),string(e.fechaInstalacion),string(e.estadoEquipo),string(e.refaccionesCambiadas),e.proveedorServicio,e.servicio]
+    insertEquipo = sprintf('insert into Equipo(equipo,marca,modelo,numeroSerie,proveedor,fechaInstal,estado,refaccionesCambiadas,proveedorServicio,servicio) values ("%s","%s","%s","%s","%s","%s","%s","%s","%s","%s");', datos);
+    exec(conn, insertEquipo);
 end
 
 close(conn);
