@@ -92,7 +92,7 @@ for row = 2 :  dataRows
             ee = '';
         end
         if strcmp(rc,'NaN')
-            rc = '';
+            rc = 'NA';
         end
         if strcmp(co,'NaN')
             co = '-';
