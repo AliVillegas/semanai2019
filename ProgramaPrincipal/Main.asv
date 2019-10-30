@@ -1,0 +1,5 @@
+dbfile = fullfile(pwd,'Inventario.db');
+conn = sqlite(dbfile);
+equipos = table2array(fetch(conn,'SELECT * ifnull(column2,0) From Equipo'));
+
+close(conn);

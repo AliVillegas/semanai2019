@@ -10,12 +10,14 @@ classdef Equipo
         fechaInstalacion
         estadoEquipo  
         refaccionesCambiadas
+        consumibles
         proveedorServicio
         servicio
+        area
     end
     
     methods
-        function obj = Equipo(nc,n,ma,mo,ns,pc,u,fi,ee,rc,ps,se)
+        function obj = Equipo(nc,n,ma,mo,ns,pc,u,fi,ee,rc,co,ps,se,ar)
              if nargin > 0
                 obj.equipo = n;
                 obj.marca = ma;
@@ -28,7 +30,9 @@ classdef Equipo
                 obj.estadoEquipo = ee;
                 obj.refaccionesCambiadas = rc;
                 obj.proveedorServicio = ps;
-                obj.servicio = se
+                obj.servicio = se;
+                obj.area = ar;
+                obj.consumibles = co;
              end
         end
     end
