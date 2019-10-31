@@ -3,7 +3,7 @@
 containsNumbers = cellfun(@isnumeric,DATA);
 DATA(containsNumbers) = cellfun(@num2str,DATA(containsNumbers),'UniformOutput',false);
 equipos = [];
-areas ={'-','INGENIERIA BIOMEDICA','MORGUE','HEMODIALISIS','RADIOTERAPIA','CUARTO DE MAQUINAS','REHABILITACION FISICA', 'ONCOLOGIA','POLICLINICA','IMAGEN','URGENCIAS','ENDOSCOPIA','MEDICINA NUCLEAR','QUIROFANO CENTRAL', 'CEYE','TERAPIA INTERMEDIA','TERAPIA INTENSIVA', 'LABOR', 'CUNERO','HOSPITALIZACION SEGUNDO PISO', 'HOSPITALICACION TERCER PISO','FARMACIA,FLORES y REGALOS','FARMACIA,HOSPITALIZACION','ALMACEN y SUBALMACENES', 'APOYO RESPIRATORIO'};
+areas ={'-','INGENIERIA BIOMEDICA','MORGUE','HEMODIALISIS','RADIOTERAPIA','CUARTO DE MAQUINAS','REHABILITACION FISICA', 'ONCOLOGIA','POLICLINICA','IMAGEN','URGENCIAS','ENDOSCOPIA','MEDICINA NUCLEAR','QUIROFANO CENTRAL', 'CEyE','TERAPIA INTERMEDIA','TERAPIA INTENSIVA', 'LABOR', 'CUNERO','HOSPITALIZACION SEGUNDO PISO', 'HOSPITALIZACION TERCER PISO','FARMACIA, FLORES y REGALOS','FARMACIA, HOSPITALIZACION','ALMACEN Y SUBALMACENES','CIRUGIA', 'APOYO RESPIRATORIO'};
 proveedoresDeServicio = [];
 servicios = [];
 modelos = [];
@@ -189,23 +189,23 @@ for ubicacion = 1 : ubicacionC
     exec(conn, insertUbicacion);
 end
 
-%LLENAR SERVICIOS
-datos = ["-", "-"];
-insertServicio = sprintf('insert into Servicio(mes,tipo) values ("%s","%s");', datos);
-exec(conn, insertServicio);
-for month = 1 : 12
-    for type = 1 : 2
-        if type == 1
-            datos = [string(months(1,month)), "Pendiente"]
-            insertServicio = sprintf('insert into Servicio(mes,tipo) values ("%s","%s");', datos);
-            exec(conn, insertServicio);
-        else
-            datos = [string(months(1,month)), "Realizado"]
-            insertServicio = sprintf('insert into Servicio(mes,tipo) values ("%s","%s");', datos);
-            exec(conn, insertServicio);
-        end
-    end
-end
+% %LLENAR SERVICIOS
+% datos = ["-", "-"];
+% insertServicio = sprintf('insert into Servicio(mes,tipo) values ("%s","%s");', datos);
+% exec(conn, insertServicio);
+% for month = 1 : 12
+%     for type = 1 : 2
+%         if type == 1
+%             datos = [string(months(1,month)), "Pendiente"]
+%             insertServicio = sprintf('insert into Servicio(mes,tipo) values ("%s","%s");', datos);
+%             exec(conn, insertServicio);
+%         else
+%             datos = [string(months(1,month)), "Realizado"]
+%             insertServicio = sprintf('insert into Servicio(mes,tipo) values ("%s","%s");', datos);
+%             exec(conn, insertServicio);
+%         end
+%     end
+% end
 
 %LLENAR PROVEEDORES DE SERVICIO
 [proveedorR, proveedorC] = size(proveedoresDeServicio);
