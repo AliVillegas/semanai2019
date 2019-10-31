@@ -41,6 +41,8 @@ for row = 2 :  dataRows
         ma = DATA(row,column + 2);
         mo = DATA(row,column + 3);
        % mo = find(strcmp(modelos,DATA(row,column + 3)));
+        ac = DATA(row,column + 7);
+        af = DATA(row,column + 8);
         ns = DATA(row,column + 4);
         pc = DATA(row,column + 6);
         u = DATA(row,column + 9);
@@ -62,6 +64,12 @@ for row = 2 :  dataRows
             telefono = '-';
         end
         if strcmp(nc,'NaN')
+            nc = '';
+        end
+        if strcmp(af,'NaN')
+            nc = '';
+        end
+        if strcmp(ac,'NaN')
             nc = '';
         end
         if strcmp(n,'NaN')
@@ -152,7 +160,7 @@ for row = 2 :  dataRows
            %disp(ps)
         end
         [eR, eC] = size(equipos);
-        equipo = Equipo(nc,n,ma,mo,ns,pc,u,fi,ee,rc,co,ps,1,ar);
+        equipo = Equipo(nc,n,ma,mo,ns,pc,u,fi,ee,rc,co,ps,1,ar,ac,af);
         if ~strcmp(nc,'')
           equipos = [equipos,equipo];
         end
@@ -216,8 +224,8 @@ end
 
 for equipo = 1 : equiposC
     e = equipos(1,equipo);
-    datos = [string(e.equipo),string(e.marca), string(e.modelo), string(e.numSerie),string(e.proveedorCompra),string(e.fechaInstalacion),string(e.estadoEquipo),string(e.refaccionesCambiadas),string(e.consumibles),e.proveedorServicio,e.servicio, e.ubicacion,e.area]
-    insertEquipo = sprintf('insert into Equipo(equipo,marca,modelo,numeroSerie,proveedor,fechaInstal,estado,refaccionesCambiadas,consumibles,proveedorServicio,servicio,ubicacion,area) values ("%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s");', datos);
+    datos = [string(e.equipo),string(e.marca), string(e.modelo), string(e.numSerie),string(e.accesorios),string(e.numActivoFijo),string(e.proveedorCompra),string(e.fechaInstalacion),string(e.estadoEquipo),string(e.refaccionesCambiadas),string(e.consumibles),e.proveedorServicio,e.servicio, e.ubicacion,e.area]
+    insertEquipo = sprintf('insert into Equipo(equipo,marca,modelo,numeroSerie,accesorios,numActivoFijo,proveedor,fechaInstal,estado,refaccionesCambiadas,consumibles,proveedorServicio,servicio,ubicacion,area) values ("%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s");', datos);
     exec(conn, insertEquipo);
 end
 clearvars -except areas conn
