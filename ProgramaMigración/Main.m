@@ -16,7 +16,7 @@ columnNamesProveedorServicio = {'nombre','contacto','telefono'};
 %curs = fetch(conn, query);
 %curs = fetch(curs);
 %disp(curs.Data);
-
+    
 for row = 2 : dataRows
     for column = 1: 1
  foundModelExists = isempty(find(strcmp(modelos,DATA(row,column + 3)), 1));
