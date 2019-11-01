@@ -23,3 +23,7 @@ telefonoVisible = 'ProveedorServicio.telefono';
 mainQuery = sprintf('SELECT Equipo.numControl,Equipo.equipo,Equipo.marca,Equipo.modelo,Equipo.numeroSerie,%s %s %s %s %s %s %s %s %s FROM Equipo JOIN Area ON Equipo.area = Area.id JOIN Ubicacion ON Equipo.ubicacion=Ubicacion.id JOIN ProveedorServicio ON Equipo.proveedorServicio = ProveedorServicio.id;',areaVisible,proveedorCompraVisible,fechaInstalVisible,estadoVisible,consumiblesVisible,refaccionesVisible,proveedorServicioVisible,contactoVisible,telefonoVisible);
 sql = fetch(conn,mainQuery)
 close(conn);
+           D=Document('FromTemplate','docx','Reporte.dotx');
+           open(D);
+           moveToNextHole(D);
+           append(D, "Hello World");

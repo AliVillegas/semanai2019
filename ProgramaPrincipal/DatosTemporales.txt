@@ -1,1 +1,0 @@
-Número de Control,Equipo,Marca,Modelo,Número de Serie,Área,Ubicación,Proveedor de Compra, Fecha Instalación, Estado,Consumibles,Refacciones Cambiadas,Proveedor de Servicio, Contacto, Teléfono
